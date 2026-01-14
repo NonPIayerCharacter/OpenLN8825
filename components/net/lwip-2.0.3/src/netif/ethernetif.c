@@ -506,3 +506,15 @@ void ethernetif_remove_station(uint8_t *mac)
 }
 
 
+int ethernetif_got_ip(void)
+{
+    struct netif* nif = ethernetif_get_netif(ethernetif_get_active());
+    /* (DHCP supplied) or ((Static IP) and (LinkUp)) */
+
+#if (LWIP_DHCP != 0)
+    return ((0 != dhcp_supplied_address(nif)) || \
+        ((IPADDR_ANY != nif->ip_addr.addr) && (nif->flags & (NETIF_FLAG_LINK_UP | NETIF_FLAG_UP))));
+#else
+    return (((IPADDR_ANY != nif->ip_addr.addr) && (nif->flags & (NETIF_FLAG_LINK_UP | NETIF_FLAG_UP))));
+#endif
+}

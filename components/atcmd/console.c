@@ -40,7 +40,7 @@ void console_echo_enable(bool en)
     CONSOLE_CTRL_T *console = &console_ctrl;
     console->echo = en;
 }
-
+/*
 void console_exe_command(char *cmd, unsigned int cmd_len)
 {
     CONSOLE_CTRL_T *console = &console_ctrl;
@@ -101,7 +101,7 @@ static void lookup_cmd_line(CONSOLE_CTRL_T *console, Serial_t *fd, uint8_t ch)
         }
     }
 }
-
+*/
 #ifdef __CONFIG_OS_KERNEL
 static void console_task(void *arg)
 {
@@ -155,7 +155,7 @@ void console_init(void)
 #endif
 
     console->index = 0;
-    memset(console->console_cmd_buffer, 0, CMD_CBSIZE);
+    //memset(console->console_cmd_buffer, 0, CMD_CBSIZE);
 
 #ifdef __CONFIG_OS_KERNEL
     if(OS_SemaphoreCreate(&g_rx_sem, 0, 1024) != OS_OK) {
@@ -179,7 +179,7 @@ void console_init(void)
     serial_init(fd, SER_PORT_UART1, CONSOLE_PORT_BAUDRATE, serial_rx_callbcak);//SER_PORT_UART0
 #endif // !AT_LOG_MERGE_TO_UART0
 
-#ifdef __CONFIG_OS_KERNEL
+#if 0// __CONFIG_OS_KERNEL
     /* start console task */
     if(OS_ThreadCreate(&g_console_thread, "Console_task",
                 console_task,

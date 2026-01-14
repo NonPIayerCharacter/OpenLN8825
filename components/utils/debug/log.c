@@ -3,7 +3,6 @@
 #include "utils/debug/log.h"
 #include "serial.h"
 
-
 #define LOG_PORT_BAUDRATE  CFG_UART_BAUDRATE_LOG
 
 Serial_t m_LogSerial;
@@ -92,5 +91,13 @@ void log_init(void)
     #else
         // normal mode.
         serial_init(&m_LogSerial, SER_PORT_UART0, LOG_PORT_BAUDRATE, NULL);//2000000 SER_PORT_UART1
+    #endif // !AT_LOG_MERGE_TO_UART0
+}
+
+void log_deinit(void)
+{
+    #if (defined(AT_LOG_MERGE_TO_UART0) && (AT_LOG_MERGE_TO_UART0 == 1))
+    #else
+			serial_deinit(&m_LogSerial);
     #endif // !AT_LOG_MERGE_TO_UART0
 }

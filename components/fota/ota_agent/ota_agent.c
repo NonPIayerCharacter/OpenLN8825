@@ -4,6 +4,7 @@
 #include "xz_decompress.h"
 #include "flash_partition_mgr.h"
 #include <string.h>
+#include "utils/debug/log.h"
 
 static uint8_t temp_buf[LEN_4KB];
 
@@ -222,31 +223,51 @@ int ota_boot_upgrade_agent(jump_to_app_t jump_to_app)
     int err = OTA_ERR_NONE;
 
     int ret = port->upg_state_get(&upgrade_state);
+    LOG(LOG_LVL_INFO, "Upgrade state = 0x%x\r\n", (uint32_t)upgrade_state);
     if ((ret != LN_TRUE) || (upgrade_state == (upg_state_t)((uint32_t)-1)))
     {
         /* upg state parameter stored in the NVDS, if we have never set upgrade_state, 
            its original value is 0xFFFFFFFF((uint32_t)-1).  
            if reach here, may be first startup or NVDS damaged */
-
-        //LOG("upgrade_state = 0x%x", upgrade_state);
+				LOG(LOG_LVL_INFO, "NVDS damaged\r\nChecking APP\r\n");
         if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_APP, \
                                                       &partition_info_app, &app_header))) {
-            //TODO:HOOK
-            return err;
+						LOG(LOG_LVL_INFO, "APP is damaged, checking OTA\r\n");
+            if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_OTA, \
+                                                          &partition_info_ota, &ota_header))) {
+								LOG(LOG_LVL_INFO, "Both APP and OTA are damaged!\r\n");
+                //abnormal!!! app&ota image are damaged!
+                //TODO:HOOK
+                return err;
+            }
+						LOG(LOG_LVL_INFO, "OTA checked out, upgrading.\r\n");
+            port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
+            return restore_image(jump_to_app);
         }
 
+				LOG(LOG_LVL_INFO, "APP checked out.\r\n");
         jump_to_app(partition_info_app.start_addr + sizeof(image_hdr_t));
         return OTA_ERR_NONE;
     }
 
     if (UPG_STATE_DOWNLOAD_OK != upgrade_state)
     {
+				LOG(LOG_LVL_INFO, "Upgrade state != %u. Checking APP\r\n", UPG_STATE_DOWNLOAD_OK);
         if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_APP, \
                                                       &partition_info_app, &app_header))) {
-            //TODO:HOOK
-            return err;
+						LOG(LOG_LVL_INFO, "APP is damaged, checking OTA\r\n");
+            if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_OTA, \
+                                                          &partition_info_ota, &ota_header))) {
+								LOG(LOG_LVL_INFO, "Both APP and OTA are damaged!\r\n");
+                return err;
+            }
+
+						LOG(LOG_LVL_INFO, "OTA checked out, upgrading.\r\n");
+            port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
+            return restore_image(jump_to_app);
         }
 
+				LOG(LOG_LVL_INFO, "APP checked out.\r\n");
         jump_to_app(partition_info_app.start_addr + sizeof(image_hdr_t));
         return OTA_ERR_NONE;
     }
@@ -255,21 +276,24 @@ int ota_boot_upgrade_agent(jump_to_app_t jump_to_app)
         if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_APP, \
                                                       &partition_info_app, &app_header)))
         {
+						LOG(LOG_LVL_INFO, "APP is damaged, checking OTA\r\n");
             /* a power loss may have occurred during the last copy. */
             if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_OTA, \
                                                           &partition_info_ota, &ota_header))) {
-                //abnormal!!! app&ota image are damaged!
-                //TODO:HOOK
+								LOG(LOG_LVL_INFO, "Both APP and OTA are damaged!\r\n");
                 return err;
             }
 
+						LOG(LOG_LVL_INFO, "OTA checked out, upgrading.\r\n");
             port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
             return restore_image(jump_to_app);
         }
         else
         {
+						LOG(LOG_LVL_INFO, "Checking OTA.\r\n");
             if (OTA_ERR_NONE != (err = verify_total_img_partition(PARTITION_TYPE_OTA, \
                                                           &partition_info_ota, &ota_header))) {
+								LOG(LOG_LVL_INFO, "OTA is damaged.\r\n");
                 //update OTA upg state [upg restory filed]
 
                 //jump to app!
@@ -279,24 +303,27 @@ int ota_boot_upgrade_agent(jump_to_app_t jump_to_app)
             }
 
             //version compare
-            if (((ota_header.ver.ver_major << 8) + ota_header.ver.ver_minor) > \
-                ((app_header.ver.ver_major << 8) + app_header.ver.ver_minor))
-            {
-                port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
-                return restore_image(jump_to_app);
-            }
-            else if (((ota_header.ver.ver_major << 8) + ota_header.ver.ver_minor) == \
+            //if (((ota_header.ver.ver_major << 8) + ota_header.ver.ver_minor) > \
+            //    ((app_header.ver.ver_major << 8) + app_header.ver.ver_minor))
+            //{
+            //    port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
+            //    return restore_image(jump_to_app);
+            //}
+						//else
+            if (((ota_header.ver.ver_major << 8) + ota_header.ver.ver_minor) == \
                      ((app_header.ver.ver_major << 8) + app_header.ver.ver_minor))
             {
                 /* a power loss may have occurred after the last restore before the UPG STATE update. */
+								LOG(LOG_LVL_INFO, "OTA version is identical to APP, checking CRC32... ");
                 if ((app_header.img_size_orig == ota_header.img_size_orig) && \
                     (app_header.img_crc32_orig == ota_header.img_crc32_orig))
                 {
                     //update OTA param
                     upgrade_state = UPG_STATE_RESTORE_OK;
+										LOG(LOG_LVL_INFO, "Identical, continuing.\r\n");
 
                     if (LN_TRUE != port->upg_state_set(upgrade_state)) {
-                        //TODO:HOOK
+												LOG(LOG_LVL_INFO, "Failed to update state.\r\n");
                         return OTA_ERR_NVDS_RW;
                     }
 
@@ -308,15 +335,17 @@ int ota_boot_upgrade_agent(jump_to_app_t jump_to_app)
                 {
                     //TODO:HOOK
                     //ota image ver is too low,but wo also jump to app.
-                    jump_to_app(partition_info_app.start_addr + sizeof(image_hdr_t));
+                    //jump_to_app(partition_info_app.start_addr + sizeof(image_hdr_t));
+										LOG(LOG_LVL_INFO, "Different. Upgrading...\r\n");
+										port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
+										return restore_image(jump_to_app);
                 }
             }
-            /* why? it's impossible to go into this branch */
             else
             {
-                //TODO:HOOK
-                //ota image ver is too low,but wo also jump to app.
-                jump_to_app(partition_info_app.start_addr + sizeof(image_hdr_t));
+								LOG(LOG_LVL_INFO, "Upgrading...\r\n");
+                port->flash_drv.erase(partition_info_app.start_addr, partition_info_app.size);
+                return restore_image(jump_to_app);
             }
         }
     }

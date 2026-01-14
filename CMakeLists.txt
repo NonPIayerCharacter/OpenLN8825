@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION  3.0.0)
 ################################################################################
 #######################  NOTE: select user project first    ####################
 ################################################################################
-set(USER_PROJECT   wifi_mcu_basic_example)
+set(USER_PROJECT   OpenBeken)
 # set(USER_PROJECT   wifi_mcu_airkiss_demo)
 # set(USER_PROJECT   wifi_mcu_ota_demo)
 # set(USER_PROJECT   wifi_mcu_qcloud_misc_demo)
@@ -25,7 +25,7 @@ project(${USER_PROJECT}
 ################################################################################
 ##############################  Debug/Release  #################################
 ################################################################################
-# set(CMAKE_BUILD_TYPE Release) # default value is Debug.
+set(CMAKE_BUILD_TYPE Release) # default value is Debug.
 
 if(NOT  CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE  Debug)
@@ -49,10 +49,10 @@ set(TARGET_ELF_NAME  ${PROJECT_NAME}.elf)
 ##########################   default module selection   ########################
 option(COMP_MCU_LN882X_SUPPORT  "MCU LN882X driver."                                            OFF)
 option(COMP_WIFI_SUPPORT        "WiFi firmware."                                                OFF)
-option(COMP_ATCMD_SUPPORT       "For WiFi operation && Iperf && Ping test."                     OFF)
-option(COMP_FOTA_SUPPORT        "OTA image process."                                            OFF)
+option(COMP_ATCMD_SUPPORT       "For WiFi operation && Iperf && Ping test."                     ON)
+option(COMP_FOTA_SUPPORT        "OTA image process."                                            ON)
 option(COMP_KV_SUPPORT          "Lightweight persisent storage module."                         ON)
-option(COMP_NVDS_SUPPORT        "Non Volatile Data Storage driver."                             OFF)
+option(COMP_NVDS_SUPPORT        "Non Volatile Data Storage driver."                             ON)
 option(COMP_PARTMGR_SUPPORT     "Partition Manager."                                            OFF)
 option(COMP_KERNEL_SUPPORT      "OS and adapter layer."                                         ON)
 option(COMP_DHCPD_SUPPORT       "DHCP client."                                                  ON)
