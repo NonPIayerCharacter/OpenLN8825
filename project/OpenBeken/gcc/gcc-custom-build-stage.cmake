@@ -38,7 +38,7 @@ add_custom_command(TARGET  ${TARGET_ELF_NAME}
         COMMAND  ${CMAKE_OBJDUMP}  -S           ${EXECUTABLE_OUTPUT_PATH}/${TARGET_ELF_NAME}  >  ${ASM_TARGET}
         COMMAND  ${CMAKE_SIZE}                  ${EXECUTABLE_OUTPUT_PATH}/${TARGET_ELF_NAME}
         #COMMAND  ${LN_MKIMAGE}     cmd_app      ${CMAKE_SOURCE_DIR}/lib/boot_ln882x.bin  ${BIN_TARGET}  ${ASM_TARGET}  ${FLASH_TARGET}  ${CMAKE_SOURCE_DIR}/project/${USER_PROJECT}/cfg/flash_partition_cfg.json  ver=1.1
-        COMMAND  python3   ${LN_MKIMAGE}   --sdkroot_dir ${CMAKE_SOURCE_DIR}  --userproj_dir  ${CMAKE_CURRENT_LIST_DIR}/../ --buildout_dir  ${EXECUTABLE_OUTPUT_PATH}  --buildout_name  ${PROJECT_NAME}  --output flashimage.bin
+        COMMAND  python3   ${LN_MKIMAGE}   --sdkroot_dir ${CMAKE_SOURCE_DIR}  --userproj_dir  ${CMAKE_CURRENT_LIST_DIR}/../ --buildout_dir  ${EXECUTABLE_OUTPUT_PATH}  --buildout_name  ${PROJECT_NAME} --output flashimage.bin  --ver_major=${VER_MAJOR} --ver_minor=${VER_MINOR}
 	WORKING_DIRECTORY  ${EXECUTABLE_OUTPUT_PATH}
-        COMMENT  ">>>>>>  Generating ${HEX_TARGET}, ${BIN_TARGET}, ${ASM_TARGET}, ${FLASH_TARGET}  <<<<<<"
+        COMMENT  ">>>>>>  Generating ${HEX_TARGET}, ${BIN_TARGET}, ${ASM_TARGET}, ${FLASH_TARGET} v${VER_MAJOR}.${VER_MINOR} <<<<<<"
 )

@@ -3,14 +3,6 @@ set(CMAKE_SYSTEM_NAME       Generic)
 set(CMAKE_SYSTEM_VERSION    1)
 set(CMAKE_SYSTEM_PROCESSOR  Arm)
 
-function(CHECK_REBUILD_MKIMAGE  SYS_BIT)
-    execute_process(COMMAND  bash  "-c"  "file ${CMAKE_SOURCE_DIR}/tools/bin/mkimage | awk -F '[ -]' '{print $4}'"
-                    OUTPUT_VARIABLE     MKIMAGE_BIT)
-    if (NOT  ${SYS_BIT}  EQUAL  ${MKIMAGE_BIT})
-        execute_process(COMMAND  bash  "-c"  "cd ${CMAKE_SOURCE_DIR}/tools/src/mkimage && make && cd -")
-    endif()
-endfunction(CHECK_REBUILD_MKIMAGE SYS_BIT)
-
 set(TOOL_SUFFIX  "")
 if (WIN32)
     if($ENV{CROSS_TOOLCHAIN_ROOT}  STREQUAL "")
@@ -22,18 +14,12 @@ if (WIN32)
 elseif (APPLE)
     MESSAGE(FATAL_ERROR  "NOT SUPPORT")
 elseif (UNIX)
-    execute_process(COMMAND  getconf  LONG_BIT
-                    OUTPUT_VARIABLE  SYS_BIT
-    )
-
     if($ENV{CROSS_TOOLCHAIN_ROOT}  STREQUAL "")
         message(FATAL_ERROR  "CROSS_TOOLCHAIN_ROOT must be set!!!")
     endif($ENV{CROSS_TOOLCHAIN_ROOT}  STREQUAL "")
 
     set(COMPILER_HOME  $ENV{CROSS_TOOLCHAIN_ROOT}  CACHE  PATH  "cross-compiler home"  FORCE)
     set(TOOL_SUFFIX     "")
-
-    CHECK_REBUILD_MKIMAGE(${SYS_BIT})
 endif ()
 
 # set compiler prefix.

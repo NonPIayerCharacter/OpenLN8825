@@ -19,7 +19,7 @@ include(${CMAKE_SOURCE_DIR}/project/${USER_PROJECT}/gcc/gcc-arm-none-eabi.cmake)
 ################################################################################
 project(${USER_PROJECT}
     VERSION    1.0.0
-    LANGUAGES  C  ASM
+    LANGUAGES  C CXX  ASM
 )
 
 ################################################################################
@@ -56,11 +56,11 @@ option(COMP_NVDS_SUPPORT        "Non Volatile Data Storage driver."             
 option(COMP_PARTMGR_SUPPORT     "Partition Manager."                                            OFF)
 option(COMP_KERNEL_SUPPORT      "OS and adapter layer."                                         ON)
 option(COMP_DHCPD_SUPPORT       "DHCP client."                                                  ON)
-option(COMP_HTTPSCLIENT_SUPPORT "A simple HTTP client."                                         OFF)
-option(COMP_IPERF_SUPPORT       "Iperf-liked network performance tool."                         OFF)
+#option(COMP_HTTPSCLIENT_SUPPORT "A simple HTTP client."                                         OFF)
+#option(COMP_IPERF_SUPPORT       "Iperf-liked network performance tool."                         OFF)
 option(COMP_LWIP_SUPPORT        "Light weight TCP/IP stack."                                    ON)
 option(COMP_MBEDTLS_SUPPORT     "MbedTLS library."                                              OFF)
-option(COMP_PING_SUPPORT        "Ping tool."                                                    ON)
+#option(COMP_PING_SUPPORT        "Ping tool."                                                    OFF)
 option(COMP_SERIAL_SUPPORT      "Serial driver."                                                ON)
 option(COMP_AIRKISS_SUPPORT     "AirKiss for device network setup."                             OFF)
 option(COMP_SMARTCFG_SUPPORT    "SmartConfig for device network setup."                         OFF)
@@ -80,11 +80,11 @@ set(COMP_NVDS_DIR         ${CMAKE_SOURCE_DIR}/components/fs/nvds)
 set(COMP_PARTMGR_DIR      ${CMAKE_SOURCE_DIR}/components/fs/partition_mgr)
 set(COMP_KERNEL_DIR       ${CMAKE_SOURCE_DIR}/components/kernel)
 set(COMP_DHCPD_DIR        ${CMAKE_SOURCE_DIR}/components/net/dhcpd)
-set(COMP_HTTPSCLIENT_DIR  ${CMAKE_SOURCE_DIR}/components/net/httpsclient)
-set(COMP_IPERF_DIR        ${CMAKE_SOURCE_DIR}/components/net/iperf)
+#set(COMP_HTTPSCLIENT_DIR  ${CMAKE_SOURCE_DIR}/components/net/httpsclient)
+#set(COMP_IPERF_DIR        ${CMAKE_SOURCE_DIR}/components/net/iperf)
 set(COMP_LWIP_DIR         ${CMAKE_SOURCE_DIR}/components/net/lwip-2.0.3/src)
 set(COMP_MBEDTLS_DIR      ${CMAKE_SOURCE_DIR}/components/net/mbedtls)
-set(COMP_PING_DIR         ${CMAKE_SOURCE_DIR}/components/net/ping)
+#set(COMP_PING_DIR         ${CMAKE_SOURCE_DIR}/components/net/ping)
 set(COMP_SERIAL_DIR       ${CMAKE_SOURCE_DIR}/components/serial)
 set(COMP_AIRKISS_DIR      ${CMAKE_SOURCE_DIR}/components/smartlink/airkiss)
 set(COMP_SMARTCFG_DIR     ${CMAKE_SOURCE_DIR}/components/smartlink/smartcfg)
@@ -156,11 +156,11 @@ if(COMP_DHCPD_SUPPORT)
 endif(COMP_DHCPD_SUPPORT)
 
 if(COMP_HTTPSCLIENT_SUPPORT)
-  add_subdirectory(${COMP_HTTPSCLIENT_DIR})
+  #add_subdirectory(${COMP_HTTPSCLIENT_DIR})
 endif(COMP_HTTPSCLIENT_SUPPORT)
 
 if(COMP_IPERF_SUPPORT)
-  add_subdirectory(${COMP_IPERF_DIR})
+  #add_subdirectory(${COMP_IPERF_DIR})
 endif(COMP_IPERF_SUPPORT)
 
 if(COMP_LWIP_SUPPORT)
@@ -180,7 +180,7 @@ if(COMP_MBEDTLS_SUPPORT)
 endif(COMP_MBEDTLS_SUPPORT)
 
 if(COMP_PING_SUPPORT)
-  add_subdirectory(${COMP_PING_DIR})
+  #add_subdirectory(${COMP_PING_DIR})
 endif(COMP_PING_SUPPORT)
 
 if(COMP_SERIAL_SUPPORT)

@@ -29,6 +29,10 @@ set(PHONY_SRC
     ${COMP_WIFI_DIR}/wifi_manager/wifi_manager.c
     ${COMP_WIFI_DIR}/wifi_port/wifi_port.c
 )
+foreach(SOURCE_FILE ${PHONY_SRC})
+    get_filename_component(barename ${SOURCE_FILE} NAME)
+    set_source_files_properties(${SOURCE_FILE} PROPERTIES COMPILE_DEFINITIONS __FILE__="${barename}")
+endforeach(SOURCE_FILE)
 
 set(phony_static_target   "phony")
 add_library(${phony_static_target}  STATIC  ${PHONY_SRC})

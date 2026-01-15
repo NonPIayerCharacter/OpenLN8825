@@ -63,51 +63,9 @@ class AfterBuildGCC(AfterBuildBase):
 
         self.partcfg_filepath = os.path.abspath(os.path.join(userproj_dir, "cfg/flash_partition_cfg.json"))
         projcfg_filepath = os.path.abspath(os.path.join(userproj_dir, "cfg/proj_config.h"))
-        major = None
-        minor = None
+        major = int(args[5])
+        minor = int(args[6])
         crp   = None
-        try:
-            with open(projcfg_filepath, "rt") as fObj:
-                for line in fObj:
-                    if not line.strip(" ").startswith("#define"):
-                        continue
-                    if line.find(AfterBuildBase.FLASH_IMAGE_VER_MAJOR_STR) > 0:
-                        strlist = line.strip(" ").split(" ")
-                        str = strlist[-1]
-                        index = 0
-                        for i in str:
-                            if (ord(i) < 0x30) or (ord(i) > 0x39):
-                                str = str[0:index]
-                            else:
-                                index = index + 1
-                        major = int(str)
-                    if line.find(AfterBuildBase.FLASH_IMAGE_VER_MINOR_STR) > 0:
-                        strlist = line.strip(" ").split(" ")
-                        str = strlist[-1]
-                        index = 0
-                        for i in str:
-                            if (ord(i) < 0x30) or (ord(i) > 0x39):
-                                str = str[0:index]
-                            else:
-                                index = index + 1
-                        minor = int(str)
-                    if line.find(AfterBuildBase.SOC_CRP_FLAG_STR) > 0:
-                        strlist = line.strip(" ").split(" ")
-                        str = strlist[-1]
-                        index = 0
-                        for i in str:
-                            if (ord(i) < 0x30) or (ord(i) > 0x39):
-                                str = str[0:index]
-                            else:
-                                index = index + 1
-                        crp = int(str)
-        except OSError as err:
-            print("Error: read LN SDK version from file: {}".format(str(err)))
-            return False
-
-        if (major is None) or (minor is None):
-            print("no LN SDK version is found!!!")
-            return False
 
         self.ver_str = '{}.{}'.format(major, minor)
 
@@ -185,6 +143,8 @@ if __name__ == "__main__":
     parser.add_argument("--buildout_dir",   help="GCC build output/bin dir, which has the FOO.elf(*.elf) file.", type=str)
     parser.add_argument("--buildout_name",  help="GCC build ouput name without 'elf', that is 'foo'.", type=str)
     parser.add_argument("-o", "--output",   help="final image name, default is 'flashimage.bin'", type=str)
+    parser.add_argument("--ver_major",      help="Major version", type=str)
+    parser.add_argument("--ver_minor",      help="Minor version", type=str)
     args = parser.parse_args()
 
     if not args.sdkroot_dir:
@@ -203,13 +163,23 @@ if __name__ == "__main__":
         print("GCC build output name MUST be provided!!!")
         exit(-4)
 
+    if not args.ver_major:
+        print("Major version MUST be provided!!!")
+        exit(-5)
+
+    if not args.ver_minor:
+        print("Minor version MUST be provided!!!")
+        exit(-6)
+
     buildObj = AfterBuildGCC()
 
     if not buildObj.prepare(args.sdkroot_dir,
                             args.userproj_dir,
                             args.buildout_dir,
                             args.buildout_name,
-                            args.output):
+                            args.output,
+                            args.ver_major,
+                            args.ver_minor):
         exit(-11)
 
     if not buildObj.doAllWork():

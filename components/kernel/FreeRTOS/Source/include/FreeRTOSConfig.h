@@ -85,12 +85,12 @@
 
 /* Ensure stdint is only used by the compiler, and not the assembler. */
 #include "proj_config.h"
-#include "SEGGER_SYSVIEW_FreeRTOS.h"
+//#include "SEGGER_SYSVIEW_FreeRTOS.h"
 
 #define TASK_RUN_MONITOR				0
 
 #define configUSE_PREEMPTION			1
-#define configUSE_TICK_HOOK				1
+#define configUSE_TICK_HOOK				0
 #define configCPU_CLOCK_HZ				( SYSTEM_CLOCK )
 #define configTICK_RATE_HZ				( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES			( 8 )
@@ -107,14 +107,16 @@
 #define configUSE_APPLICATION_TASK_TAG	0
 #define configUSE_COUNTING_SEMAPHORES	1
 #define configGENERATE_RUN_TIME_STATS	( TASK_RUN_MONITOR )
+#ifndef configUSE_TICKLESS_IDLE
 #define configUSE_TICKLESS_IDLE         1
+#endif
 #define configUSE_STATS_FORMATTING_FUNCTIONS ( TASK_RUN_MONITOR )
 #define configUSE_CPU_USAGE             0
 
 #if (configUSE_CPU_USAGE == 1)
 #define configUSE_IDLE_HOOK				1
 #else
-#define configUSE_IDLE_HOOK				0
+#define configUSE_IDLE_HOOK				1
 #endif
 
 /* Task run time monitoring in factory mode. */

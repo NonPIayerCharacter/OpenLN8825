@@ -6,9 +6,6 @@
 
 #define __CONFIG_OS_KERNEL                      RTOS_FREERTOS
 
-#define FLASH_IMAGE_VER_MAJOR                   0
-#define FLASH_IMAGE_VER_MINOR                   1
-
 /*
  * Clock settings section
  */

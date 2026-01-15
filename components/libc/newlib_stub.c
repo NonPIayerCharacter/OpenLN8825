@@ -163,9 +163,30 @@ void *_malloc_r(struct _reent *ptr, size_t size)
     return mem;
 }
 
+void* __wrap_malloc(size_t size)
+{
+    void* mem;
+
+    mem = (void*)OS_Malloc(size);
+
+    return mem;
+}
+
+extern void* pvPortRealloc(void* pv, size_t xWantedSize);
 void *_realloc_r(struct _reent *ptr, void *old, size_t newlen)
 {
     void *mem;
+
+    mem = (void*)pvPortRealloc(old, newlen);
+
+    return mem;
+}
+
+void* __wrap_realloc(void* old, size_t newlen)
+{
+    void* mem;
+
+    mem = (void*)pvPortRealloc(old, newlen);
 
     return mem;
 }

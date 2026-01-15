@@ -213,10 +213,10 @@ void Reset_Handler(void) {
         *pDest++ = 0UL;
     }
 
-    //pDest = &__retention_start__;
-    //for ( ; pDest < &__retention_end__ ; ) {
-    //    *pDest++ = 0UL;
-    //}
+    pDest = &__retention_start__;
+    for ( ; pDest < &__retention_end__ ; ) {
+        *pDest++ = 0UL;
+    }
 
     SystemInit();                             /* CMSIS System Initialization */
     main(0, NULL);

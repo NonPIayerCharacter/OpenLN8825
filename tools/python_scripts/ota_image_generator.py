@@ -146,9 +146,8 @@ class OTATOOL:
         """
         OTA image, XZ format.
         """
-        ota_filename = "{_a}-ota-xz-v{_ma}.{_mi}.bin" \
-            .format(_a= os.path.basename(self.input_filepath).split(".")[0],
-            _ma=self.image_header.getVerMajor(), _mi=self.image_header.getVerMinor())
+        ota_filename = "{_a}-ota-xz.bin" \
+            .format(_a= os.path.basename(self.input_filepath).split(".")[0])
         self.output_filepath = os.path.join(self.output_dir, ota_filename)
 
         if os.path.exists(self.output_filepath):

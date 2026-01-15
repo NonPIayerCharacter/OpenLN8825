@@ -13,7 +13,7 @@
 #include "flash_partition_table.h"
 #include "utils/reboot_trace/reboot_trace.h"
 #include "utils/runtime/runtime.h"
-#include "SEGGER_SYSVIEW.h"
+//#include "SEGGER_SYSVIEW.h"
 #include "ota_port.h"
 
 #if BLE_SUPPORT==ENABLE

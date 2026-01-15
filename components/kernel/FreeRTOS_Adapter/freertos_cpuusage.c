@@ -36,7 +36,7 @@ uint32_t       osCPU_TotalIdleTime = 0;
   * @param  None 
   * @retval None
   */
-#if ( configUSE_IDLE_HOOK == 1 )
+#if ( configUSE_IDLE_HOOK == 1 && configUSE_CPU_USAGE == 1)
 void vApplicationIdleHook(void) 
 {
   if( xIdleHandle == NULL )

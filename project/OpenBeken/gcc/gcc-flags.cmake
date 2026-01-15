@@ -26,22 +26,22 @@ set(SPECSFLAGS  "")
 set(ASFLAGS     ${MCU})
 set(ARCHFLAGS   ${MCU})
 set(OPTFLAGS    ${OPTFLAGS})
-set(LINK_FLAGS  "${ARCHFLAGS} -Wl,--gc-sections -Wl,--wrap,vsnprintf -Wl,--wrap,snprintf -Wl,--wrap,vsprintf")
+set(LINK_FLAGS  "${ARCHFLAGS} -Wl,--gc-sections -Wl,--wrap,vsnprintf -Wl,--wrap,snprintf -Wl,--wrap,vsprintf -Wl,--wrap,malloc -Wl,--wrap,realloc")
 
 set(CMAKE_C_FLAGS   "${ARCHFLAGS}  ${OPTFLAGS}  ${DBGFLAGS}  ${WARNFLAGS}  ${PREPFLAGS} \
-    -std=gnu99 -ffunction-sections -fdata-sections -fno-strict-aliasing ${SPECSFLAGS} \
-    -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'"
+    -std=gnu99 -ffunction-sections -fdata-sections -fno-strict-aliasing ${SPECSFLAGS} -Wno-builtin-macro-redefined -ffile-prefix-map=${CMAKE_SOURCE_DIR}/="
     CACHE INTERNAL "C compiler flags"
 )
 
 set(CMAKE_C_STANDARD    99)
+set(CMAKE_CXX_STANDARD      11)
 
 # NOT used.
-# set(CMAKE_CXX_FLAGS  "${ARCHFLAGS}  ${OPTFLAGS}  ${DBGFLAGS}  ${CXXWARNFLAGS}  ${PREPFLAGS} \
-#     -std=gnu++11  -ffunction-sections  -fdata-sections  -fno-strict-aliasing \
-#     -fno-rtti  -fno-exceptions  ${SPECSFLAGS}"
-#     CACHE INTERNAL "Cxx compiler flags"
-# )
+set(CMAKE_CXX_FLAGS  "${ARCHFLAGS}  ${OPTFLAGS}  ${DBGFLAGS}  ${CXXWARNFLAGS}  ${PREPFLAGS} \
+    -std=gnu++11  -ffunction-sections  -fdata-sections  -fno-strict-aliasing \
+    -fno-rtti  -fno-exceptions  ${SPECSFLAGS}"
+    CACHE INTERNAL "Cxx compiler flags"
+)
 
 set(CMAKE_ASM_FLAGS  "${ASFLAGS}  -x  assembler-with-cpp  ${DBGFLAGS}"
     CACHE INTERNAL "ASM compiler flags"

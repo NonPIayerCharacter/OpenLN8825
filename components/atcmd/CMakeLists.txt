@@ -1,5 +1,5 @@
-file(GLOB_RECURSE  ATCMD_SRC  ${COMP_ATCMD_DIR}  "*.c")
-
+#file(GLOB_RECURSE  ATCMD_SRC  ${COMP_ATCMD_DIR}  "*.c")
+set(ATCMD_SRC  console.c )
 set(atcmd_static_target "atcmd")
 
 add_library(${atcmd_static_target} STATIC ${ATCMD_SRC})
@@ -7,15 +7,15 @@ add_library(components::atcmd ALIAS ${atcmd_static_target})
 
 set(COMP_KV_SUPPORT     ON  PARENT_SCOPE)
 set(COMP_NVDS_SUPPORT   ON  PARENT_SCOPE)
-set(COMP_PING_SUPPORT   ON  PARENT_SCOPE)
-set(COMP_IPERF_SUPPORT  ON  PARENT_SCOPE)
+#set(COMP_PING_SUPPORT   ON  PARENT_SCOPE)
+#set(COMP_IPERF_SUPPORT  ON  PARENT_SCOPE)
 set(COMP_DHCPD_SUPPORT  ON  PARENT_SCOPE)
 
 target_link_libraries(${atcmd_static_target}
     components::fs::kv
     components::fs::nvds
-    components::net::ping
-    components::net::iperf
+    #components::net::ping
+    #components::net::iperf
     components::net::dhcpd
     components::phony
 )
