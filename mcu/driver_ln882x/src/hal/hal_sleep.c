@@ -11,7 +11,11 @@
 #include "hal/flash.h"
 #include "hal/hal_sleep.h"
 #include "utils/debug/log.h"
+#ifdef BOOTRAM_OSAL
+#define OS_HZ 1000
+#else
 #include "osal/osal.h"
+#endif
 
 #define SLEEP_TIMER_EXTRA_COMPENSATION_USEC                             (220)
 #define PRE_SLEEP_LOOP_COUNT            10

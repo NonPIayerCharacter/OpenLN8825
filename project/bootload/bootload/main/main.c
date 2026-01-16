@@ -20,6 +20,7 @@ extern Serial_t m_LogSerial;
 extern void log_deinit();
 
 typedef void(*entry_point_t)(void);
+
 static void set_interrupt_priority(void)
 {
     __NVIC_SetPriorityGrouping(4);
@@ -121,24 +122,13 @@ int main (int argc, char* argv[])
     }
 
     ota_port_init();
-/*
-    do {
-        if (0xaeaebebe == hal_misc_awo_get_r_idle_reg()) {
-            partition_info_t part_ota_info;
-            if (LN_TRUE != ln_fetch_partition_info(PARTITION_TYPE_OTA, &part_ota_info)) {
-                break;
-            }
-            jump_to_application(part_ota_info.start_addr + sizeof(image_hdr_t));
-            while(1);
-        }
-    } while(0);*/
 		ota_err_t err = ota_boot_upgrade_agent(jump_to_user_application);
     if(err != OTA_ERR_NONE)
     {
         // TODO:process error code
 				LOG(LOG_LVL_ERROR, "ota_boot_upgrade_agent failed with %u.\r\n", err);
     }
-		LOG(LOG_LVL_ERROR, "Failed to boot firmware!", err);
+		LOG(LOG_LVL_ERROR, "Failed to boot firmware!");
     while(1);
 }
 

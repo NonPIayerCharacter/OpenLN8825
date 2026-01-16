@@ -4,12 +4,12 @@
 #include "ln_types.h"
 
 typedef enum {
-    IMAGE_ATTACHE           = 0u,        /*< it's an attache drvice image */
-	IMAGE_TYPE_ORIGINAL     = 1u,        /*< it's an original image */
-	IMAGE_TYPE_ORIGINAL_XZ  = 2u,        /*< it's an original image which is zipped */
-	IMAGE_TYPE_DIFF         = 3u,        /*< it's a diff image */
-	IMAGE_TYPE_DIFF_XZ      = 4u,        /*< it's a diff image which is zipped */
-    IMAGE_TYPE_PLACE = 0x12345678,       /*< make different IDEs compatible */
+	IMAGE_ATTACHE           = 10u,        /*< it's an attache drvice image */
+	IMAGE_TYPE_ORIGINAL     = 11u,        /*< it's an original image */
+	IMAGE_TYPE_ORIGINAL_XZ  = 12u,        /*< it's an original image which is zipped */
+	IMAGE_TYPE_DIFF         = 13u,        /*< it's a diff image */
+	IMAGE_TYPE_DIFF_XZ      = 14u,        /*< it's a diff image which is zipped */
+	IMAGE_TYPE_PLACE = 0x12345678,       /*< make different IDEs compatible */
 } image_type_t;
 
 typedef struct {

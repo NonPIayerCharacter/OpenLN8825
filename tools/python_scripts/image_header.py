@@ -19,12 +19,12 @@ import struct
 import zlib
 from ln_tools import *
 
-IMAGE_TYPE_ATTACHE      = 0
-IMAGE_TYPE_ORIGINAL     = 1
-IMAGE_TYPE_ORIGINAL_XZ  = 2
-IMAGE_TYPE_DIFF         = 3
-IMAGE_TYPE_DIFF_XZ      = 4
-IMAGE_TYPE_INVALID      = 5
+IMAGE_TYPE_ATTACHE      = 10
+IMAGE_TYPE_ORIGINAL     = 11
+IMAGE_TYPE_ORIGINAL_XZ  = 12
+IMAGE_TYPE_DIFF         = 13
+IMAGE_TYPE_DIFF_XZ      = 14
+IMAGE_TYPE_INVALID      = 15
 
 __IMAGE_TYPE_DICT = {
     IMAGE_TYPE_ATTACHE      : "attache",

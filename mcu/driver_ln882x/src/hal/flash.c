@@ -701,6 +701,34 @@ void FLASH_OperationWait(void)
         qspi_standard_read_byte(&flash_status, sizeof(flash_status), &read_stat_cmd, sizeof(read_stat_cmd));
     } while( flash_status & 0x1);
 }
+/**
+ * @brief Read FLASH Unique ID 128bits.
+ */
+void hal_flash_read_unique_id(uint8_t *unique_id)
+{
+    uint8_t cmd_buf[5];
+    uint8_t read_back[16]; 
+
+    cmd_buf[0] = 0x4B;
+    cmd_buf[1] = 0;//dumy data
+    cmd_buf[2] = 0;//dumy data
+    cmd_buf[3] = 0;//dumy data
+    cmd_buf[4] = 0;//dumy data
+
+#if (FLASH_XIP == 1)
+    GLOBAL_INT_DISABLE();
+    flash_cache_disable();
+#endif
+
+    qspi_standard_read_byte(read_back, sizeof(read_back), cmd_buf, sizeof(cmd_buf));
+
+#if (FLASH_XIP == 1)
+    flash_cache_init(0);
+    GLOBAL_INT_RESTORE();
+#endif
+
+    memcpy(unique_id,read_back,sizeof(read_back));
+}
 
 #if defined (__CC_ARM)
 #pragma pop
