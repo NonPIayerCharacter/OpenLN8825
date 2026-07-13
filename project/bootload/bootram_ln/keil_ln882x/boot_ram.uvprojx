@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>LN882x BOOTRAM_OSAL __FILE__=NULL</Define>
+              <Define>LN882x BOOTRAM_OSAL __FILE__=NULL TDEFL_LESS_MEMORY MINIZ_NO_ARCHIVE_APIS MINIZ_NO_STDIO MINIZ_NO_TIME</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\..\..\mcu\ln88xx;..\..\..\..\mcu\CMSIS_5.3.0;..\..\..\..\mcu\driver_ln882x\inc;..\..\..\..\mcu\driver_ln882x\inc\reg;..\..\..\..\components;..\..\..\..\components\serial;..\..\..\..\components\fs\partition_mgr;..\..\..\..\components\fota\ota_agent;..\..\..\..\components\fs\kv\kv_port;..\..\..\..\components\fs\kv\kv;..\bsp;..\main</IncludePath>
             </VariousControls>
@@ -422,6 +422,11 @@
               <FileName>hal_sleep.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\mcu\driver_ln882x\src\hal\hal_sleep.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_efuse.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\mcu\driver_ln882x\src\hal\hal_efuse.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -532,6 +537,21 @@
               <FileName>wrap_stdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\utils\wrap_stdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>miniz.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\miniz\miniz.c</FilePath>
+            </File>
+            <File>
+              <FileName>miniz_tdef.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\miniz\miniz_tdef.c</FilePath>
+            </File>
+            <File>
+              <FileName>miniz_tinfl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\libraries\miniz\miniz_tinfl.c</FilePath>
             </File>
           </Files>
         </Group>

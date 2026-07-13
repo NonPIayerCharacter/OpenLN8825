@@ -80,21 +80,21 @@ void bootram_ctrl_loop(void)
                 bootram_enter_command_mode();
                 break;
             }
-            case BOOTRAM_MODE_CMD_2_DOWNLOAD: {
-                bootram_serial_flush();
-                fsm->bootram_cur_mode = BOOTRAM_MODE_DOWNLOAD;
-                break;
-            }
-            case BOOTRAM_MODE_DOWNLOAD: {
-                bootram_enter_file_mode();
-                fsm->bootram_cur_mode = BOOTRAM_MODE_DOWNLOAD_2_CMD;
-                break;
-            }
-            case BOOTRAM_MODE_DOWNLOAD_2_CMD: {
-                bootram_serial_flush();
-                fsm->bootram_cur_mode = BOOTRAM_MODE_CMD;
-                break;
-            }
+            //case BOOTRAM_MODE_CMD_2_DOWNLOAD: {
+            //    bootram_serial_flush();
+            //    fsm->bootram_cur_mode = BOOTRAM_MODE_DOWNLOAD;
+            //    break;
+            //}
+            //case BOOTRAM_MODE_DOWNLOAD: {
+            //    bootram_enter_file_mode();
+            //    fsm->bootram_cur_mode = BOOTRAM_MODE_DOWNLOAD_2_CMD;
+            //    break;
+            //}
+            //case BOOTRAM_MODE_DOWNLOAD_2_CMD: {
+            //    bootram_serial_flush();
+            //    fsm->bootram_cur_mode = BOOTRAM_MODE_CMD;
+            //    break;
+            //}
             default: break;
         }
     }

@@ -15,10 +15,10 @@
 #define MODEM_ABORT2             (0x61) /* 'a' == 0x61, abort by user */
 
 #define YMODME_PACKET_SMALL_SIZE (128)
-#define YMODEM_PACKET_BIG_SIZE   (4096 * 4)
+#define YMODEM_PACKET_BIG_SIZE   (1024 * 1)
 
 // put ymodem packets into `g_cache_buffer` before program to flash.
-#define CACHE_BUFFER_SIZE        (1024 * 16)
+#define CACHE_BUFFER_SIZE        (1024 * 1)
 
 #define MODEM_MAX_RETRIES        (0xFFFFFFF)  //
 #define READ_TIMEOUT             0xFFFF

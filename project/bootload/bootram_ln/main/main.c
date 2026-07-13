@@ -111,3 +111,10 @@ void DebugMon_Handler (void)
 }
 
 
+//void* $Sub$$malloc(size_t size)
+//{
+//  extern unsigned int Image$$HEAP_SPACE0$$ZI$$Base;
+//  extern unsigned int Image$$HEAP_SPACE0$$ZI$$Limit;
+//	if(size > (uint32_t)(&Image$$HEAP_SPACE0$$ZI$$Limit) - (uint32_t)(&Image$$HEAP_SPACE0$$ZI$$Base)) return NULL;
+//	return &Image$$HEAP_SPACE0$$ZI$$Base;
+//}
